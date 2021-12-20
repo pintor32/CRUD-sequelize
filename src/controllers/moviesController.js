@@ -65,23 +65,28 @@ const moviesController = {
     });
   },
   update: function (req, res) {
+    const { title, rating, awards, release_date, length, genre_id } = req.body;
     Movies.update(
       {
-        title: req.body.title,
-        rating: req.body.rating,
-        awards: req.body.awards,
-        release_date: req.body.release_date,
-        length: req.body.length,
-        genre_id: req.body.genre_id,
+        title,
+        rating,
+        awards,
+        release_date,
+        length,
+        genre_id,
       },
       {
         where: {
           id: req.params.id,
         },
       }
-    );
-
-    res.redirect("/movies/detail/" + req.params.id);
+    )
+      .then((result) => {
+        res.redirect("/movies");
+      })
+      .catch((err) => {
+        res.send(err);
+      });
   },
   delete: function (req, res) {
     Movies.findByPk(req.params.id)
